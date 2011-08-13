@@ -1,5 +1,6 @@
 
 from flp import *
+from flp import _and
 
 EQUAL_0 = do(cons(identity, cst(0)), equal)
 SUB_1 = do(cons(identity, cst(1)), sub)
@@ -53,7 +54,7 @@ if __name__ == '__main__':
         )
         (persons))
 
-    print("fact:", do(_range, mul)(4))
+    print("fact:", do(range_from(1), mul)(4))
 
     result = do(
         transpose,
@@ -61,3 +62,9 @@ if __name__ == '__main__':
         foldLeft(add)
     )([[1, 2, 3], [6, 5, 4]])
     print("intern product:", result)
+
+    f = lambda x : x + 1
+    print(compose(f, f, f)(f, f, f)(1))
+
+# End
+

@@ -164,21 +164,26 @@ def cond(p, t, e):
         return e(x)
     return cond_on
 
-def compose(f):
+def compose(*f_seq):
     """
-    (a -> b) -> (c -> a) -> c -> b
+    (a -> b)* -> (c -> a) -> c -> b
     """
-    def compose_with(g):
-        def compose_on(x):
-            return f(g(x))
-        return compose_on
+    def compose_with(*g_seq):
+        if len(g_seq) > 1 or hasattr(g_seq[0], '__call__'):
+            return compose(*(f_seq + g_seq))
+        result = g_seq[0]
+        for f in reversed(f_seq):
+            result = f(result)
+        return result
     return compose_with
 
-def _range(x):
+def range_from(start):
     """
-    Num a => a -> [Int]
+    Num a => a -> a -> [Int]
     """
-    return range(1, x + 1)
+    def _range(x):
+        return range(start, x + 1)
+    return _range
 
 def get(x):
     """
